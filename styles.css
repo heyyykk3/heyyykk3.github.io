@@ -318,6 +318,15 @@ h1 span {
   text-underline-offset: 6px;
 }
 
+.archive-art {
+  width: min(620px, 100%);
+  margin: 72px 0 0 auto;
+}
+
+.archive-art img {
+  max-height: 360px;
+}
+
 .contact-section {
   padding: 96px 0 0;
 }
