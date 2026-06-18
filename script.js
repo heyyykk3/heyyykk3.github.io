@@ -1,42 +1,46 @@
-const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const typedItems = document.querySelectorAll(".type-text");
+const typeItems = Array.from(document.querySelectorAll(".scroll-type"));
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-function typeText(element) {
-  if (element.dataset.started === "true") return;
-
-  element.dataset.started = "true";
-  const text = element.dataset.text || "";
-
-  if (prefersReducedMotion) {
-    element.textContent = text;
-    element.classList.add("done");
-    return;
-  }
-
-  let index = 0;
-  element.textContent = "";
-
-  const timer = window.setInterval(() => {
-    element.textContent += text.charAt(index);
-    index += 1;
-
-    if (index >= text.length) {
-      window.clearInterval(timer);
-      element.classList.add("done");
-    }
-  }, 24);
+function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), max);
 }
 
-const observer = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        typeText(entry.target);
-        observer.unobserve(entry.target);
-      }
-    });
-  },
-  { threshold: 0.45 },
-);
+function sectionProgress(section) {
+  const rect = section.getBoundingClientRect();
+  const viewport = window.innerHeight || document.documentElement.clientHeight;
+  const start = viewport * 0.68;
+  const end = -rect.height + viewport * 0.55;
 
-typedItems.forEach((item) => observer.observe(item));
+  if (rect.top >= start) return 0;
+  if (rect.top <= end) return 1;
+
+  return clamp((start - rect.top) / (start - end), 0, 1);
+}
+
+function updateText() {
+  typeItems.forEach((item) => {
+    const text = item.dataset.text || "";
+
+    if (reduceMotion) {
+      item.textContent = text;
+      item.classList.add("complete");
+      return;
+    }
+
+    const section = item.closest(".page-section");
+    const siblings = Array.from(section.querySelectorAll(".scroll-type"));
+    const index = siblings.indexOf(item);
+    const progress = sectionProgress(section);
+    const itemStart = siblings.length === 1 ? 0 : index / siblings.length;
+    const itemEnd = siblings.length === 1 ? 1 : (index + 1) / siblings.length;
+    const localProgress = clamp((progress - itemStart) / (itemEnd - itemStart), 0, 1);
+    const length = Math.floor(text.length * localProgress);
+
+    item.textContent = text.slice(0, length);
+    item.classList.toggle("complete", length >= text.length);
+  });
+}
+
+window.addEventListener("scroll", updateText, { passive: true });
+window.addEventListener("resize", updateText);
+updateText();
