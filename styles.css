@@ -1,10 +1,10 @@
 :root {
-  --bg: #0b0b0a;
-  --panel: #1b1b1b;
-  --text: #e8e6e0;
-  --muted: #8f8a82;
-  --dim: #4a4742;
-  --yellow: #ffe000;
+  --bg: #070b13;
+  --text: #edf4ff;
+  --muted: #9faabd;
+  --dim: #4b5870;
+  --ice: #b9e7ff;
+  --blue: #4d8dff;
 }
 
 * {
@@ -17,98 +17,95 @@ body {
   background: var(--bg);
   font-family: Arial, Helvetica, sans-serif;
   line-height: 1.5;
+  overflow-x: hidden;
 }
 
 main {
   position: relative;
-  width: min(1480px, calc(100% - 48px));
+  width: 100%;
   margin: 0 auto;
-  padding: 26px 0 100px;
-}
-
-.mark {
-  width: 31px;
-  height: 18px;
-  margin: 0 auto 32px;
-  border-radius: 28px 28px 0 0;
-  background: var(--text);
+  padding: 0 0 100px;
 }
 
 .hero {
   position: relative;
-  min-height: 760px;
+  display: flex;
+  min-height: min(96vh, 900px);
+  align-items: flex-end;
+  padding: clamp(120px, 18vh, 190px) clamp(22px, 7vw, 130px) clamp(138px, 15vh, 190px);
+  overflow: hidden;
+  isolation: isolate;
 }
 
 .painting {
-  width: min(1180px, 76vw);
-  margin: 0 auto;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  margin: 0;
+}
+
+.painting::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(7, 11, 19, 0.12) 0%, rgba(7, 11, 19, 0) 34%, var(--bg) 100%),
+    linear-gradient(90deg, rgba(7, 11, 19, 0.68), rgba(7, 11, 19, 0.08) 42%, rgba(7, 11, 19, 0.56));
 }
 
 .painting img {
   display: block;
   width: 100%;
-  aspect-ratio: 1.78 / 1;
+  height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: center 38%;
+  filter: saturate(0.9) brightness(0.82);
 }
 
 .painting figcaption {
-  margin-top: 16px;
-  color: var(--dim);
+  position: absolute;
+  left: clamp(22px, 5vw, 78px);
+  bottom: clamp(30px, 5vw, 70px);
+  z-index: 2;
+  max-width: 460px;
+  margin: 0;
+  color: var(--ice);
   font-family: "Courier New", monospace;
-  font-size: 13px;
+  font-size: clamp(12px, 1.1vw, 15px);
   letter-spacing: 0.08em;
-  text-align: right;
+  text-align: left;
+}
+
+.hero-copy {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1080px;
+  min-width: 0;
 }
 
 h1 {
-  position: absolute;
-  left: 50%;
-  top: 250px;
-  width: max-content;
   margin: 0;
-  color: var(--yellow);
+  color: var(--ice);
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(78px, 10vw, 176px);
+  font-size: clamp(70px, 12vw, 190px);
   font-weight: 700;
-  line-height: 0.84;
-  transform: translateX(-50%);
+  line-height: 0.78;
+  text-shadow: 0 18px 52px rgba(0, 0, 0, 0.38);
 }
 
 h1 span {
   display: block;
-  font-size: 0.52em;
+  color: var(--blue);
+  font-size: 0.45em;
   font-style: italic;
-  text-align: center;
-}
-
-.side {
-  position: absolute;
-  top: 230px;
-  margin: 0;
-  color: var(--text);
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(34px, 4vw, 58px);
-  font-style: italic;
-  line-height: 1;
-  white-space: nowrap;
-}
-
-.side-left {
-  left: 10px;
-  transform: rotate(-90deg) translateX(-20%);
-  transform-origin: left top;
-}
-
-.side-right {
-  right: 10px;
-  transform: rotate(90deg) translateX(20%);
-  transform-origin: right top;
 }
 
 .hero-note {
-  max-width: 680px;
-  margin: 8px auto 0;
+  max-width: min(680px, 100%);
+  margin: 28px 0 0;
   color: var(--muted);
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(21px, 2vw, 30px);
@@ -128,7 +125,7 @@ h1 span {
 
 .portfolio-row h2 {
   margin: 0;
-  color: #d9d7d0;
+  color: var(--ice);
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(32px, 3.2vw, 50px);
   font-style: italic;
@@ -152,7 +149,7 @@ h1 span {
 
 .index {
   margin: 0 0 28px !important;
-  color: var(--dim) !important;
+  color: var(--blue) !important;
   font-family: "Courier New", monospace;
   font-size: 20px !important;
 }
@@ -190,85 +187,34 @@ h1 span {
 .links-row a {
   display: inline-block;
   margin: 0 22px 12px 0;
-  color: var(--text);
-  text-decoration-color: var(--dim);
+  color: var(--ice);
+  text-decoration-color: var(--blue);
   text-underline-offset: 5px;
 }
 
-.burst {
-  position: fixed;
-  right: 56px;
-  bottom: 42px;
-  z-index: 3;
-  display: grid;
-  width: 150px;
-  height: 150px;
-  place-items: center;
-  clip-path: polygon(
-    50% 0%,
-    58% 10%,
-    70% 4%,
-    75% 17%,
-    89% 16%,
-    88% 30%,
-    100% 38%,
-    91% 50%,
-    100% 62%,
-    88% 70%,
-    89% 84%,
-    75% 83%,
-    70% 96%,
-    58% 90%,
-    50% 100%,
-    42% 90%,
-    30% 96%,
-    25% 83%,
-    11% 84%,
-    12% 70%,
-    0% 62%,
-    9% 50%,
-    0% 38%,
-    12% 30%,
-    11% 16%,
-    25% 17%,
-    30% 4%,
-    42% 10%
-  );
-  color: #0a0a0a;
-  background: var(--yellow);
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 22px;
-  font-style: italic;
-  font-weight: 700;
-  text-align: center;
-  text-decoration: none;
-  transform: rotate(11deg);
-}
-
 @media (max-width: 920px) {
-  main {
-    width: min(100% - 28px, 1480px);
-  }
-
   .hero {
-    min-height: auto;
-    padding-bottom: 52px;
+    display: block;
+    min-height: 84vh;
+    padding: 0 22px 112px;
   }
 
-  .painting {
-    width: 100%;
+  .hero-copy {
+    position: absolute;
+    right: 22px;
+    bottom: 126px;
+    left: 22px;
+    width: auto;
+    max-width: none;
   }
 
   h1 {
-    top: 28vw;
-  }
-
-  .side {
-    display: none;
+    font-size: clamp(56px, 16vw, 88px);
   }
 
   .portfolio-row,
   .project-grid-row {
+    width: min(100% - 28px, 1180px);
     grid-template-columns: 1fr;
     gap: 28px;
     padding: 52px 0;
@@ -278,8 +224,16 @@ h1 span {
     grid-template-columns: 1fr;
   }
 
-  .burst {
-    position: static;
-    margin: 24px 0 0 auto;
+  .hero-note {
+    margin-top: 20px;
+    max-width: 320px;
+    font-size: clamp(20px, 6vw, 27px);
+  }
+
+  .painting figcaption {
+    right: 22px;
+    bottom: 24px;
+    max-width: 320px;
+    overflow-wrap: break-word;
   }
 }
